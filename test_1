@@ -1,0 +1,12 @@
+import time
+
+def focus_timer(minutes):
+    seconds = minutes * 60
+    while seconds > 0:
+        print(f"剩余时间：{seconds // 60} 分钟 {seconds % 60} 秒")
+        time.sleep(1)
+        seconds -= 1
+    print("时间到！")
+
+focus_timer(25) # 设定专注时长为25分钟
+#这段代码定义了一个名为 focus_timer 的函数，它接受一个参数 minutes，表示要设定的专注时长（以分钟为单位）。函数将输入的分钟数转换为秒数，并在一个 while 循环中逐秒减少计时器。每一秒钟，它会输出剩余时间并让程序暂停一秒钟。当计时器降至零时，它将输出“时间到！”。
