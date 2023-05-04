@@ -1,0 +1,9 @@
+import os
+
+def shutdown_timer(minutes):
+    seconds = minutes * 60
+    print(f"计算机将在 {minutes} 分钟后自动关机")
+    os.system(f"shutdown /s /t {seconds}") 
+
+shutdown_timer(30) # 设定30分钟后自动关机
+#在Windows系统下，我们可以使用 shutdown /s /t 命令来实现自动关机。其中 /s 表示关机操作，/t 后面跟的数字表示间隔多少秒后执行关机操作。
