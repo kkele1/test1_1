@@ -1,0 +1,23 @@
+import webbrowser
+import time
+
+# 设置待搜索的时间格式
+time_format = '%H:%M:%S'
+
+# 输入待搜索的时间
+search_time_str = input('请输入待搜索的时间（格式为HH:MM:SS）：')
+search_time = time.strptime(search_time_str, time_format)
+
+# 循环检查当前时间是否等于待搜索时间
+while True:
+    now_time = time.localtime()
+    if now_time.tm_hour == search_time.tm_hour and \
+            now_time.tm_min == search_time.tm_min and \
+            now_time.tm_sec == search_time.tm_sec:
+        # 当前时间等于待搜索时间，打开浏览器并搜索时间
+        url = f'https://www.google.com/search?q={search_time_str}'
+        webbrowser.open(url)
+        break
+    else:
+        # 当前时间不等于待搜索时间，休眠1秒后继续检查
+        time.sleep(1)
