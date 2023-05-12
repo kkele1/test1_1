@@ -1,0 +1,22 @@
+import smtplib
+from email.mime.text import MIMEText
+from datetime import datetime, timedelta
+
+smtp_server = 'your.smtp.server.com'  # 更改为实际的SMTP服务器
+sender_email = 'your_sender_email@example.com'  # 更改为实际的发件人电子邮件地址
+recipient_email = 'your_recipient_email@example.com'  # 更改为实际的收件人电子邮件地址
+
+def create_email(subject, body):
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = sender_email
+    msg['To'] = recipient_email
+    return msg
+send_time = datetime.now() + timedelta(days=1)  # 设置发送时间为明天的此时
+
+while datetime.now() < send_time:
+    pass  # 等待到发送时间
+with smtplib.SMTP(smtp_server) as server:
+    server.login(sender_email, password)  # 输入SMTP密码
+    email = create_email('主题', '内容')
+    server.sendmail(sender_email, recipient_email, email.as_string())
