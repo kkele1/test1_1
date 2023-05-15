@@ -1,0 +1,32 @@
+import requests
+import json
+
+def get_location_weather():
+    # 获取IP地址
+    response = requests.get('http://ip-api.com/json/')
+    location_data = json.loads(response.text)
+    
+    # 获取城市名和经纬度
+    city = location_data['city']
+    lat = location_data['lat']
+    lon = location_data['lon']
+    
+    # 构造API请求URL
+    api_url = f'http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=YOUR_APP_ID&lang=zh_cn&units=metric'
+    
+    # 发送API请求并解析JSON响应
+    response = requests.get(api_url)
+    weather_data = json.loads(response.text)
+    
+    # 提取所需的天气数据
+    weather_description = weather_data['weather'][0]['description']
+    temperature = weather_data['main']['temp']
+    wind_speed = weather_data['wind']['speed']
+    
+    # 输出结果
+    print(f'{city}的天气：{weather_description}')
+    print(f'温度：{temperature}℃')
+    print(f'风速：{wind_speed}m/s')
+
+# 调用函数获取当前位置天气
+get_location_weather()
