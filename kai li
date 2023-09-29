@@ -1,0 +1,30 @@
+以下是一个简单的 Python 程序，可以快速进行长度单位的转换。在这个程序中，我们提供了厘米、毫米、英寸、英尺、码和米的转换。用户可以输入他们想要转换的长度，以及原始单位和目标单位。
+
+python
+def convert_length():  
+    units = {  
+        'cm': 1,  
+        'mm': 10,  
+        'inch': 25.4,  
+        'ft': 304.8,  
+        'yd': 914.4,  
+        'm': 1000  
+    }  
+  
+    input_unit = input("输入的长度单位是什么？(cm/mm/inch/ft/yd/m): ").strip().lower()  
+    input_length = float(input("输入的长度是多少？: "))  
+    output_unit = input("转换到什么单位？(cm/mm/inch/ft/yd/m): ").strip().lower()  
+  
+    if input_unit == output_unit:  
+        print(f"长度已经是以{output_unit}为单位了。")  
+        return  
+  
+    if input_unit not in units or output_unit not in units:  
+        print("无效的单位输入。请重新输入。")  
+        return convert_length()  
+  
+    converted_length = input_length * units[input_unit] / units[output_unit]  
+    print(f"转换后的长度是：{converted_length} {output_unit}")  
+  
+convert_length()
+在这个程序中，首先定义了一个字典 units，其中包含了各种长度单位与米之间的转换关系。然后询问用户输入的长度单位、输入的长度和要转换成的单位，并据此进行转换。如果输入的单位与转换的单位相同，则直接打印出信息。如果输入的单位或转换的单位无效，则重新提示用户输入。
