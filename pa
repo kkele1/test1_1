@@ -1,0 +1,23 @@
+import pyowm
+
+def get_local_pressure(api_key, location):
+    owm = pyowm.OWM(api_key)
+    
+    try:
+        observation = owm.weather_at_place(location)
+        w = observation.get_weather()
+        pressure = w.get_pressure()
+
+        # 输出气压信息
+        print(f"当前 {location} 的气压为 {pressure['press']} hPa")
+    except pyowm.exceptions.api_response_error.NotFoundError:
+        print("找不到该地点的天气信息，请检查地点名称是否正确。")
+    except pyowm.exceptions.api_call_error.APICallError:
+        print("API 调用出错，请检查 API 密钥是否正确。")
+
+# 你需要在 https://openweathermap.org/ 上注册并获取你的 API 密钥
+api_key = 'YOUR_OPENWEATHERMAP_API_KEY'
+# 设置你要查询的地点，例如：'City, Country'
+location = 'Beijing, China'
+
+get_local_pressure(api_key, location)
