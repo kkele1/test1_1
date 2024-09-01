@@ -1,0 +1,73 @@
+import os
+import subprocess
+import sys
+
+# 定义OpenWrt源码仓库的URL
+REPO_URL = "https://git.openwrt.org/openwrt/openwrt.git"
+# 定义OpenWrt源码目录
+SOURCE_DIR = "openwrt"
+# 定义编译生成的固件存储目录
+BUILD_DIR = "build"
+
+# 依赖包安装命令，根据你的系统调整
+DEPENDENCIES_INSTALL_CMD = "sudo apt-get install -y build-essential libncurses5-dev gawk git unzip zlib1g-dev"
+
+def run_command(command, cwd=None):
+    """运行系统命令，并打印输出"""
+    print(f"运行命令: {command}")
+    result = subprocess.run(command, shell=True, cwd=cwd, check=True)
+    return result
+
+def install_dependencies():
+    """安装编译依赖包"""
+    print("安装依赖包...")
+    run_command(DEPENDENCIES_INSTALL_CMD)
+
+def clone_openwrt_repo():
+    """克隆OpenWrt源码仓库"""
+    if os.path.exists(SOURCE_DIR):
+        print(f"{SOURCE_DIR} 已存在，跳过克隆")
+    else:
+        print("克隆OpenWrt源码...")
+        run_command(f"git clone {REPO_URL} {SOURCE_DIR}")
+
+def update_openwrt_repo():
+    """更新OpenWrt源码仓库"""
+    print("更新OpenWrt源码...")
+    run_command("git pull", cwd=SOURCE_DIR)
+
+def install_feeds():
+    """安装OpenWrt的feeds"""
+    print("安装feeds...")
+    run_command("./scripts/feeds update -a", cwd=SOURCE_DIR)
+    run_command("./scripts/feeds install -a", cwd=SOURCE_DIR)
+
+def configure_openwrt():
+    """配置OpenWrt编译选项"""
+    if not os.path.exists(os.path.join(SOURCE_DIR, ".config")):
+        print("配置OpenWrt编译选项...")
+        run_command("make menuconfig", cwd=SOURCE_DIR)
+    else:
+        print(".config 已存在，跳过配置")
+
+def build_openwrt():
+    """编译OpenWrt固件"""
+    print("编译OpenWrt固件...")
+    run_command("make -j$(nproc)", cwd=SOURCE_DIR)
+
+def main():
+    """主程序"""
+    try:
+        install_dependencies()
+        clone_openwrt_repo()
+        update_openwrt_repo()
+        install_feeds()
+        configure_openwrt()
+        build_openwrt()
+        print("编译完成！固件可以在 'bin' 目录下找到。")
+    except subprocess.CalledProcessError as e:
+        print(f"发生错误: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
